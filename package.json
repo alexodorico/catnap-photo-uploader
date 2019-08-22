@@ -1,0 +1,37 @@
+{
+  "name": "catnap-uploader",
+  "version": "0.1.0",
+  "description": "Photo uploader for Catnap",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexodorico/catnap-photo-uploader.git"
+  },
+  "keywords": [
+    "photo",
+    "uploader",
+    "cloudinary",
+    "api",
+    "microservice"
+  ],
+  "author": "Alex Odorico",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexodorico/catnap-photo-uploader/issues"
+  },
+  "homepage": "https://github.com/alexodorico/catnap-photo-uploader#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
