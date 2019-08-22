@@ -1,9 +1,18 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const auth = require("./auth");
 const uploader = require("./uploader");
+const cloudinary = require('cloudinary').v2;
 const port = process.env.PORT || 3000;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_URL,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET
+});
+
 
 app.use(cors());
 
