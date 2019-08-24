@@ -5,11 +5,6 @@ const fs = require("fs");
 const db = require("./db");
 
 const catUpload = async (req, res) => {
-  const error = res.status(400).json({
-    success: false,
-    message: "Oops! Something went wrong while trying to post your photo."
-  });
-
   try {
     const file = req.file.path;
     const [result] = await client.labelDetection(file);
@@ -20,36 +15,46 @@ const catUpload = async (req, res) => {
       const secure_url = await upload(file);
 
       if (secure_url) {
-        const success = await updateDb("posts", "photo_url", secure_url, req.params.postId);
-
-        if (success) {
-          deleteFile(file);
-          return res.status(201).json({ success: true, url: secure_url });
-        }
-
         deleteFile(file);
-        return error;
+        return res.send({ success: true, url: secure_url });
       }
 
       deleteFile(file);
-      return error;
+      return res.status(400).json({
+        success: false,
+        message: "Oops! Something went wrong while trying to post your photo."
+      })
     }
 
     deleteFile(file);
     return res.status(400).json({ success: false, message: "Please upload a picture of a cat!" });
-  } catch (e) {
-    return error;
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Oops! Something went wrong while trying to post your photo."
+    })
   }
 }
 
-const userAvatarUpload = async _ => {
-  const { secure_url } = await cloudinary.uploader.upload(req.body.data, (error, result) => console.log(result));
-  const success = await updateDb("users", "avatar_url", url, req.params.userId);
+const userAvatarUpload = async (req, res) => {
+  try {
+    const file = req.file.path;
+    const secure_url = await upload(file);
 
-  if (success) {
-    return res.status(201).json({ success: true, url: secure_url });
-  } else {
-    return res.status(400).json({ success: false });
+    if (secure_url) {
+      deleteFile(file);
+      return res.status(201).json({ success: true, url: secure_url });
+    } else {
+      deleteFile(file);
+      return res.status(400).json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Oops! Something went wrong while trying to post your photo."
+    })
   }
 }
 
@@ -72,17 +77,6 @@ const upload = async file => {
   }
 
   return false;
-}
-
-const updateDb = async (table, column, url, id) => {
-  const query = `UPDATE ${table} SET ${column} = $1 WHERE id = $2`;
-
-  try {
-    await db.query(query, [url, id]);
-    return true
-  } catch (error) {
-    return false
-  }
 }
 
 const deleteFile = file => {
