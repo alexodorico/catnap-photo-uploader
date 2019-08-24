@@ -24,8 +24,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post("/api/upload/post/:postId", auth.verifyToken, upload.single("file"), uploader.catUpload);
-app.post("/api/upload/user/:userId", auth.verifyToken, upload.single("file"), uploader.userAvatarUpload);
-app.post("/api/upload/cat/:catId", auth.verifyToken, upload.single("file"), uploader.catUpload);
+app.post("/api/upload/post/", auth.verifyToken, upload.single("file"), uploader.catUpload);
+app.post("/api/upload/user/", auth.verifyToken, upload.single("file"), uploader.userAvatarUpload);
+app.post("/api/upload/cat/", auth.verifyToken, upload.single("file"), uploader.catUpload);
 
 app.listen(port, _ => console.log(`Listenin' on port ${port} 🔥`));
